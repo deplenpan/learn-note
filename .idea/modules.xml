@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/patrol-common/patrol-common.iml" filepath="$PROJECT_DIR$/patrol-common/patrol-common.iml" />
+      <module fileurl="file://$PROJECT_DIR$/patrol-distribute.iml" filepath="$PROJECT_DIR$/patrol-distribute.iml" />
+      <module fileurl="file://$PROJECT_DIR$/patrol-event-management/patrol-event-management.iml" filepath="$PROJECT_DIR$/patrol-event-management/patrol-event-management.iml" />
+      <module fileurl="file://$PROJECT_DIR$/patrol-generator/patrol-generator.iml" filepath="$PROJECT_DIR$/patrol-generator/patrol-generator.iml" />
+    </modules>
+  </component>
+</project>
