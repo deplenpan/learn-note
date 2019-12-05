@@ -1,5 +1,5 @@
 /.idea/
 /logs/
-/patrol-common/*.iml
-/patrol-event-management/*.iml
-/patrol-generator/*.iml
+*.iml
+!/.idea/
+.idea
