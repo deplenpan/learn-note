@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--
+   mapper标签:配置各类声明
+   namespace：名称空间，由于映射文件可能有多个，为了防止crud语句的唯一标识被重复，需要设置空间名称。
+ -->
+
+<mapper namespace="com.icbc.patrol.mapper.EventMapper">
+    <!--
+        select:查询的statement（声明），用来编写查询语句
+        id:语句的唯一标识
+        resultType：配置返回的结果集类型
+        parameterType：传递的参数类型，可以省略
+    -->
+
+    <!--    Field Type Comment-->
+    <!--    id bigint(11) NOT NULL-->
+    <!--    event_num varchar(128) NULL-->
+    <!--    equipment_id varchar(128) NULL设备ID-->
+    <!--    location varchar(128) NULL设备故障位置-->
+    <!--    problem varchar(128) NULL设备故障描述-->
+    <!--    cause varchar(128) NULL设备故障原因-->
+    <!--    solution varchar(128) NULL设备故障解决方案-->
+    <!--    is_completed int(11) NULL0:完成，1:未完成-->
+    <!--    created_time timestamp NOT NULL创建时间-->
+    <!--    updated_time timestamp NOT NULL更新时间-->
+    <resultMap id="EventResultMap" type="com.icbc.patrol.model.Event" autoMapping="true">
+        <id column="id" jdbcType="BIGINT" property="id"></id>
+        <result column="event_num" jdbcType="VARCHAR" property="eventNum"></result>
+        <result column="equipment_id" jdbcType="VARCHAR" property="equipmentId"></result>
+        <result column="location" jdbcType="VARCHAR" property="location"></result>
+        <result column="room_num" jdbcType="VARCHAR" property="roomNum"></result>
+        <result column="model" jdbcType="VARCHAR" property="model"></result>
+        <result column="problem" jdbcType="VARCHAR" property="problem"></result>
+        <result column="cause" jdbcType="VARCHAR" property="cause"></result>
+        <result column="solution" jdbcType="VARCHAR" property="solution"></result>
+        <result column="is_completed" jdbcType="INTEGER" property="isCompleted"></result>
+        <result column="version" jdbcType="VARCHAR" property="version"></result>
+        <result column="is_deleted" jdbcType="INTEGER" property="isDeleted"></result>
+        <result column="created_time" jdbcType="TIMESTAMP" property="createdTime"></result>
+        <result column="updated_time" jdbcType="TIMESTAMP" property="updatedTime"></result>
+    </resultMap>
+
+    <sql id="commonSql">
+        id,
+        event_num,
+        equipment_id,
+        location,
+        model,
+        room_num,
+        problem,
+        cause,
+        solution,
+        is_completed,
+        is_deleted,
+        version,
+        created_time,
+        updated_time
+    </sql>
+
+    <!--  查询  -->
+    <select id="queryByEventNum" resultMap="EventResultMap">
+        select
+            <include refid="commonSql"></include>
+        from
+            event
+        <if test="eventNum!=null and eventNum.trim()!=''">
+            where event_num = #{eventNum,jdbcType=VARCHAR}
+        </if>
+
+    </select>
+
+    <select id="queryPeriodEventList" resultMap="EventResultMap">
+        select
+            <include refid="commonSql"></include>
+        from
+            event
+        where
+            created_time
+        between
+            #{startTime}
+        and
+            #{endTime}
+    </select>
+
+    <!-- 新增 -->
+    <insert id="addEvent" parameterType="com.icbc.patrol.model.Event">
+        insert into
+            event(
+                id,
+                event_num,
+                equipment_id,
+                location,
+                model,
+                room_num,
+                problem,
+                cause,
+                solution,
+                is_completed,
+                is_deleted,
+                version,
+                created_time,
+                updated_time
+                )
+        values (
+                #{id,jdbcType=BIGINT},
+                #{eventNum,jdbcType=VARCHAR},
+                #{equipmentId,jdbcType=VARCHAR},
+                #{location,jdbcType=VARCHAR},
+                #{model,jdbcType=VARCHAR},
+                #{roomNum,jdbcType=VARCHAR},
+                #{problem,jdbcType=VARCHAR},
+                #{cause,jdbcType=VARCHAR},
+                #{solution,jdbcType=VARCHAR},
+                #{isCompleted,jdbcType=INTEGER},
+                #{isDeleted,jdbcType=INTEGER},
+                #{version,jdbcType=VARCHAR},
+                now(),
+                now()
+                )
+    </insert>
+
+    <!-- 更新 -->
+    <update id="updateByEventNum" parameterType="com.icbc.patrol.model.Event">
+         update
+            event
+         set
+            equipment_id = #{equipmentId,jdbcType=VARCHAR},
+            location = #{location,jdbcType=VARCHAR},
+            room_num = #{roomNum,jdbcType=VARCHAR},
+            is_completed = #{isCompleted,jdbcType=INTEGER},
+            updated_time = now()
+         <if test="eventNum!=null and eventNum.trim()!=''">
+            where event_num = #{eventNum,jdbcType=VARCHAR} and #{id,jdbcType=BIGINT}
+         </if>
+    </update>
+
+    <!-- 删除 -->
+    <delete id="deleteByEventNum">
+        delete from
+            event
+        <if test="eventNum!=null and eventNum.trim()!=''">
+            where event_num = #{eventNum,jdbcType=VARCHAR}
+        </if>
+    </delete>
+
+</mapper>
