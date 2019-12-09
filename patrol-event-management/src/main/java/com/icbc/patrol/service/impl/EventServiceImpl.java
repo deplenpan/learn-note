@@ -6,7 +6,6 @@ import com.icbc.patrol.service.EventService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -23,6 +22,12 @@ public class EventServiceImpl implements EventService {
     @Override
     public int deleteByEventNum(String eventNum) {
         return eventMapper.deleteByEventNum(eventNum);
+    }
+
+    @Override
+    public int logicDeleteByEventNum(Event event) {
+//        Wrapper<Event> eventWrapper = new QueryWrapper<>(event);
+        return eventMapper.deleteById(event.getId());
     }
 
     @Override

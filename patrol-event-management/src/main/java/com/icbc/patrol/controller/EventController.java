@@ -4,8 +4,8 @@ import com.icbc.common.constants.ExceptionEnum;
 import com.icbc.common.constants.MessageConstants;
 import com.icbc.common.constants.StatusConstants;
 import com.icbc.common.exceptions.CustomException;
-import com.icbc.common.util.ValidatorUtil;
 import com.icbc.common.model.vo.ResponseResult;
+import com.icbc.common.util.ValidatorUtil;
 import com.icbc.patrol.model.Event;
 import com.icbc.patrol.service.EventService;
 import com.icbc.patrol.validator.IdValidator;
@@ -25,7 +25,6 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.groups.Default;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -137,8 +136,34 @@ public class EventController {
         }
         logger.info("修改事件单成功，事件单编号 = [{}]", event);
         return new ResponseEntity<>(new ResponseResult<>(StatusConstants.SUCCESS, MessageConstants.OPERATION_SUCCESS, null), HttpStatus.OK);
-
     }
+
+
+    /**
+     * 使用mybatis-plus自带方法进行逻辑删除
+     *
+     * @param event request event
+     * @return delete result
+     */
+    @RequestMapping(value = "/update/logic_delete", method = RequestMethod.PUT)
+    @ApiOperation(value = "逻辑删除事件单", httpMethod = "PUT", produces = "application/json")
+    @Transactional(rollbackFor = Exception.class)
+    public ResponseEntity<ResponseResult<Void>> logicDelete(@RequestBody @Validated({IdValidator.class, Default.class}) Event event, BindingResult bindingResult) {
+        ValidatorUtil.validData(bindingResult);
+        try {
+            int logic = eventService.logicDeleteByEventNum(event);
+            if (logic < 1) {
+                throw new CustomException(ExceptionEnum.EVENT_NUM_NOT_EXIST);
+            }
+        } catch (Exception e) {
+            logger.error("逻辑删除失败，事件单编号 = [{}]", event.getEventNum(), e);
+            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+            throw new CustomException(ExceptionEnum.OPERATION_FAILED);
+        }
+        logger.info("逻辑删除成功，事件单编号 = [{}]", event.getEventNum());
+        return new ResponseEntity<>(new ResponseResult<>(StatusConstants.SUCCESS, MessageConstants.OPERATION_SUCCESS, null), HttpStatus.OK);
+    }
+
 
     @RequestMapping(value = "/delete/{eventNum}", method = RequestMethod.DELETE)
     @ApiOperation(value = "根据事件单编号删除事件单", httpMethod = "DELETE", produces = "application/json")
@@ -160,5 +185,6 @@ public class EventController {
         logger.info("删除事件单成功");
         return new ResponseEntity<>(new ResponseResult<>(StatusConstants.SUCCESS, MessageConstants.OPERATION_SUCCESS, null), HttpStatus.OK);
     }
+
 
 }

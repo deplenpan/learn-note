@@ -4,29 +4,29 @@
 server:
   port: 10000
   servlet:
-#    address: 192.168.0.106
-#    address: 192.168.0.103
-#    address: 192.168.1.7
-#    address: 172.20.10.10
+    address: 192.168.80.177
+    #    address: 192.168.0.103
+    #    address: 192.168.1.7
+    #    address: 172.20.10.10
     context-path: /patrol
 
-####################################
+    ####################################
     # 配置druid数据库连接池
 ####################################
 spring:
-  profiles: dev
+  profiles: prod
   #  devtools:
-#    restart:
-#      enabled: true  #设置开启热部署
+  #    restart:
+  #      enabled: true  #设置开启热部署
   datasource:
     # 如果存在多个数据源，监控的时候可以通过名字来区分开来
     name: mysql
     # 连接数据库的url
-    url: jdbc:mysql://localhost:3306/patrol?characterEncoding=utf8&useSSL=false
+    url: jdbc:mysql://192.168.80.177:3306/patrol?characterEncoding=utf8&useSSL=false
     # 连接数据库的账号
     username: root
     # 连接数据库的密码
-    password: admin@12345
+    password: 123456
     # 使用druid数据源
     type: com.alibaba.druid.pool.DruidDataSource
     # 扩展插件
@@ -57,7 +57,7 @@ spring:
     # 要启用PSCache，必须配置大于0，当大于0时，poolPreparedStatements自动触发修改为true
     maxOpenPreparedStatements: -1
 
-####################################
+    ####################################
     # pagehelper分页插件
 ####################################
 pagehelper:
@@ -67,7 +67,7 @@ pagehelper:
   reasonable: true
 
 
-####################################
+  ####################################
   # mybatis-plus配置
 ####################################
 mybatis-plus:
@@ -93,7 +93,7 @@ mybatis-plus:
 #应用配置
 resources:
   # log文件写入地址
-  logdir: logs/
+  logdir: /opt/patrol/logs/
   # 应用名称
   appname: patrol
   # 日志打印的基础扫描包
@@ -103,7 +103,7 @@ logging:
   level:
     web: debug
 
-####################################
+  ####################################
   # graphql配置
 ####################################
 #graphql:

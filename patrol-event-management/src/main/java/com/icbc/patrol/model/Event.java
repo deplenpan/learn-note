@@ -58,6 +58,9 @@ public class Event extends BasePojo implements Serializable {
     @ApiModelProperty(name = "isCompleted", value = "设备故障问题是否解决，0：解决，1：未解决", dataType = "query")
     private int isCompleted;
 
+    /**
+     * 使用mybatis-plus自带方法删除和查找都会附带逻辑删除功能 (自己写的xml不会)
+     */
     @ApiModelProperty(name = "isDeleted", value = "逻辑删除标识，0：删除，1：未删除", dataType = "query")
     @TableLogic
     private Integer isDeleted;

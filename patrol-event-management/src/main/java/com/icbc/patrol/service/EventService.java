@@ -2,7 +2,6 @@ package com.icbc.patrol.service;
 
 import com.icbc.patrol.model.Event;
 
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -53,4 +52,5 @@ public interface EventService {
      */
     int deleteByEventNum(String eventNum);
 
+    int logicDeleteByEventNum(Event event);
 }

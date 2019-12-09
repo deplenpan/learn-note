@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Cors Test</title>
+</head>
+<body>
+<script type="text/javascript">
+    $.ajax(
+        {
+            url: 'http://localhost:10000/patrol/event/query/3164',
+            type: 'GET',
+            beforeSend: function (xhr) {
+                xhr.withCredentials = true;
+            },
+            success: function (data) {
+                $('#data').html("跨域访问成功" + data);
+            },
+            error: function (data) {
+                $('#data').html("跨域失败");
+            }
+        }
+    )
+</script>
+
+</body>
+</html>
